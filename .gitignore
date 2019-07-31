@@ -2,5 +2,4 @@
 !/VideoServer/dc-videoserver.yaml
 /LetsEncryptAws/*
 !/LetsEncryptAws/docker-compose.yaml
-/dc-ex.yaml
-
+/.gitignore.swp
