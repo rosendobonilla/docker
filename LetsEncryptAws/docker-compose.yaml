@@ -1,0 +1,32 @@
+nginx-proxy:
+  image: jwilder/nginx-proxy
+  restart: always
+  ports:
+    - "80:80"
+    - "443:443"
+  volumes:
+    - /var/run/docker.sock:
+    - /usr/share/nginx/html
+  labels:
+    - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+
+letsencrypt:
+  image: jrcs/letsencrypt-nginx-proxy-companion
+  restart: always
+  volumes:
+    - /home/centos/certs:/etc/nginx/certs:rw
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+  volumes_from:
+    - nginx-proxy:rw
+
+www:
+  image: nginx
+  restart: always
+  expose:
+    - "80"
+  volumes:
+    - /home/centos/www:/usr/share/nginx/html:ro
+  environment:
+    - VIRTUAL_HOST=chendo.duckdns.org
+    - LETSENCRYPT_HOST=chendo.duckdns.org
+    - LETSENCRYPT_EMAIL=bonilla.juarez.rosendo@gmail.com

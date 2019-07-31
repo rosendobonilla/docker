@@ -1,0 +1,50 @@
+---
+version: "2"
+services:
+  portainer:
+    image: portainer/portainer
+    container_name: portainer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /Users/macbookair/Documents/Docker/VideoServer/Portainer/data:/data
+    ports:
+      - 8000:8000
+      - 9000:9000
+    restart: always
+  rutorrent:
+    image: linuxserver/rutorrent
+    container_name: rutorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /Users/macbookair/Documents/Docker/VideoServer/Rtorrent/config:/config
+      - /Users/macbookair/Documents/Docker/VideoServer/Rtorrent/descargas:/downloads
+    ports:
+      - 80:80
+      - 5000:5000
+      - 51413:51413
+      - 6881:6881/udp
+    restart: unless-stopped
+  plex:
+    image: linuxserver/plex
+    container_name: plex
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /Users/macbookair/Documents/Docker/VideoServer/Rtorrent/descargas/incoming:/data
+      - /Users/macbookair/Documents/Docker/VideoServer/Plex/config:/config
+    ports:
+      - 32400:32400/tcp
+      - 3005:3005/tcp
+      - 8324:8324/tcp
+      - 32469:32469/tcp
+      - 1900:1900/udp
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+    restart: unless-stopped
+    environment:
+      - ADVERTISE_IP="http://localhost:32400/"
