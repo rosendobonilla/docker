@@ -3,3 +3,4 @@
 /LetsEncryptAws/*
 !/LetsEncryptAws/docker-compose.yaml
 /.gitignore.swp
+/.DS_Store
